@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 
 import { DataManager } from "../services/DataManager.service";
 /**
@@ -8,16 +8,28 @@ import { DataManager } from "../services/DataManager.service";
     selector: "ping-controller",
     templateUrl: "./ping.html"
 })
-export class PingControllerComponent
+export class PingControllerComponent implements OnInit
 {
+
+    private timestamp: string;
+
     constructor(private dataManager: DataManager)
+    {
+        this.timestamp = "";
+    }
+
+    ngOnInit()
+    {
+        this.pingServer();
+    }
+
+    pingServer()
     {
         this.dataManager.GET("/ping").then(
             res =>
             {
-                console.log(res);
+                this.timestamp = res.ack;
             }
         );
-        
     }
 }
